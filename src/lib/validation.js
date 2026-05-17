@@ -25,9 +25,9 @@ export function isPlainString(value) {
 // Regex: local-part @ domain . TLD
 //   Local part: starts with alphanumeric, allows ._%+- in the middle, ends with alphanumeric
 //   Domain: alphanumeric segments separated by dots, hyphens allowed in the middle
-//   TLD: 2–7 alpha characters
+//   TLD: 2–63 alpha characters (supports modern TLDs like .community, .tech, etc.)
 export const EMAIL_REGEX =
-    /^[a-zA-Z0-9](?:[a-zA-Z0-9._%+-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,7}$/;
+    /^[a-zA-Z0-9](?:[a-zA-Z0-9._%+-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,63}$/;
 
 /**
  * Validates an email address using both the custom regex and the validator library.
