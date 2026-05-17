@@ -11,10 +11,9 @@ export default function MinimalTemplate({ data }) {
   const { personalInfo, experience, education, skills, projects, certifications } = data;
 
   return (
-    <div
-      className="bg-white text-gray-800 px-10 py-9 text-[13px]"
-      style={{ fontFamily: "'Helvetica Neue', Arial, sans-serif" }}
-    >
+    <div className="bg-white text-gray-800 px-10 py-9 text-[13px]"
+      style={{ fontFamily: "'Helvetica Neue', Arial, sans-serif" }}>
+
       {/* Header */}
       <h1 className="text-2xl font-light tracking-tight text-gray-900 mb-0.5">
         {personalInfo.fullName || "Your Name"}
@@ -29,7 +28,7 @@ export default function MinimalTemplate({ data }) {
 
       {/* Summary */}
       {personalInfo.summary && (
-        <p className="text-sm text-gray-600 mb-6 leading-relaxed border-l-2 border-gray-200 pl-3">
+        <p className="text-sm text-gray-600 mb-6 leading-relaxed border-l-2 border-gray-200 pl-3 break-words">
           {personalInfo.summary}
         </p>
       )}
@@ -46,7 +45,7 @@ export default function MinimalTemplate({ data }) {
                 <p className="font-semibold text-gray-900">{exp.role}</p>
                 <p className="text-xs text-gray-500">{exp.company}</p>
                 {exp.description && (
-                  <p className="text-xs text-gray-600 mt-1 whitespace-pre-line">
+                  <p className="text-xs text-gray-600 mt-1 whitespace-pre-line break-words">
                     {exp.description}
                   </p>
                 )}
@@ -91,10 +90,7 @@ export default function MinimalTemplate({ data }) {
           </h2>
           <div className="flex flex-wrap gap-1.5">
             {[...skills.technical, ...skills.soft].map((s, i) => (
-              <span
-                key={i}
-                className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded"
-              >
+              <span key={i} className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded">
                 {s}
               </span>
             ))}
@@ -119,7 +115,13 @@ export default function MinimalTemplate({ data }) {
                 )}
               </p>
               {p.description && (
-                <p className="text-xs text-gray-600">{p.description}</p>
+                <p className="text-xs text-gray-600 break-words">{p.description}</p>
+              )}
+              {p.link && (
+                <a href={p.link} target="_blank" rel="noreferrer"
+                  className="text-xs text-blue-500 underline">
+                  {p.link}
+                </a>
               )}
             </div>
           ))}
@@ -133,15 +135,23 @@ export default function MinimalTemplate({ data }) {
             Certifications
           </h2>
           {certifications.map((c, i) => (
-            <div key={i} className="flex justify-between mb-1">
-              <div>
-                <span className="font-semibold text-gray-900">{c.name}</span>
-                {c.issuer && (
-                  <span className="text-gray-400 text-xs ml-2">— {c.issuer}</span>
+            <div key={i} className="mb-2">
+              <div className="flex justify-between">
+                <div>
+                  <span className="font-semibold text-gray-900">{c.name}</span>
+                  {c.issuer && (
+                    <span className="text-gray-400 text-xs ml-2">— {c.issuer}</span>
+                  )}
+                </div>
+                {c.date && (
+                  <span className="text-gray-400 text-xs">{fmt(c.date)}</span>
                 )}
               </div>
-              {c.date && (
-                <span className="text-gray-400 text-xs">{fmt(c.date)}</span>
+              {c.url && (
+                <a href={c.url} target="_blank" rel="noreferrer"
+                  className="text-xs text-blue-500 underline">
+                  {c.url}
+                </a>
               )}
             </div>
           ))}

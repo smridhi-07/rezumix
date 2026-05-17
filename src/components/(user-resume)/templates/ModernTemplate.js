@@ -36,7 +36,7 @@ export default function ModernTemplate({ data }) {
             <h2 style={{ fontSize: "11px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "2px", color: "#1e1b4b", borderBottom: "1px solid #c7d2fe", paddingBottom: "4px", marginBottom: "8px" }}>
               Summary
             </h2>
-            <p style={{ color: "#374151", fontSize: "13px" }}>{personalInfo.summary}</p>
+            <p style={{ color: "#374151", fontSize: "13px", wordBreak: "break-word", overflowWrap: "break-word" }}>{personalInfo.summary}</p>
           </section>
         )}
 
@@ -58,7 +58,7 @@ export default function ModernTemplate({ data }) {
                   </p>
                 </div>
                 {exp.description && (
-                  <p style={{ color: "#4b5563", fontSize: "12px", marginTop: "6px", whiteSpace: "pre-line" }}>
+                  <p style={{ color: "#4b5563", fontSize: "12px", marginTop: "6px", whiteSpace: "pre-line", wordBreak: "break-word", overflowWrap: "break-word" }}>
                     {exp.description}
                   </p>
                 )}
@@ -113,13 +113,21 @@ export default function ModernTemplate({ data }) {
             <h2 style={{ fontSize: "11px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "2px", color: "#1e1b4b", borderBottom: "1px solid #c7d2fe", paddingBottom: "4px", marginBottom: "12px" }}>
               Projects
             </h2>
-            {projects.map((p, i) => (
-              <div key={i} style={{ marginBottom: "12px" }}>
-                <p style={{ fontWeight: "bold", color: "#111827" }}>{p.title}</p>
-                {p.techStack && <p style={{ color: "#4338ca", fontSize: "12px" }}>{p.techStack}</p>}
-                {p.description && <p style={{ color: "#4b5563", fontSize: "12px" }}>{p.description}</p>}
-              </div>
-            ))}
+           {projects.map((p, i) => (
+           <div key={i} style={{ marginBottom: "12px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+             <p style={{ fontWeight: "bold", color: "#111827" }}>{p.title}</p>
+             {p.link && (
+             <a href={p.link} target="_blank" rel="noreferrer"
+             style={{ color: "#4338ca", fontSize: "11px", textDecoration: "underline" }}>
+             {p.link}
+             </a>
+             )}
+           </div>
+           {p.techStack && <p style={{ color: "#4338ca", fontSize: "12px" }}>{p.techStack}</p>}
+           {p.description && <p style={{ color: "#4b5563", fontSize: "12px", wordBreak: "break-word", overflowWrap: "break-word" }}>{p.description}</p>}
+          </div>
+))}
           </section>
         )}
 
@@ -129,15 +137,23 @@ export default function ModernTemplate({ data }) {
             <h2 style={{ fontSize: "11px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "2px", color: "#1e1b4b", borderBottom: "1px solid #c7d2fe", paddingBottom: "4px", marginBottom: "12px" }}>
               Certifications
             </h2>
-            {certifications.map((c, i) => (
-              <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-                <div>
-                  <span style={{ fontWeight: "600", color: "#111827" }}>{c.name}</span>
-                  {c.issuer && <span style={{ color: "#6b7280", fontSize: "12px", marginLeft: "8px" }}>— {c.issuer}</span>}
-                </div>
-                {c.date && <span style={{ color: "#9ca3af", fontSize: "12px" }}>{fmt(c.date)}</span>}
+           {certifications.map((c, i) => (
+          <div key={i} style={{ marginBottom: "8px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div>
+                <span style={{ fontWeight: "600", color: "#111827" }}>{c.name}</span>
+                 {c.issuer && <span style={{ color: "#6b7280", fontSize: "12px", marginLeft: "8px" }}>— {c.issuer}</span>}
               </div>
-            ))}
+                {c.date && <span style={{ color: "#9ca3af", fontSize: "12px" }}>{fmt(c.date)}</span>}
+            </div>
+              {c.url && (
+              <a href={c.url} target="_blank" rel="noreferrer"
+              style={{ color: "#4338ca", fontSize: "11px", textDecoration: "underline" }}>
+              {c.url}
+              </a>
+            )}
+          </div>
+))}
           </section>
         )}
       </div>

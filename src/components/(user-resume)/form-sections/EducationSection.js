@@ -46,7 +46,7 @@ function EducationCard({ entry, index, onChange, onRemove }) {
           <label className="text-xs text-white/40">Start</label>
           <input type="month" value={entry.startDate}
             onChange={(e) => update("startDate", e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7c6dfa] transition-all" />
+            className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7c6dfa] transition-all[color-scheme:dark]" />
         </div>
         <div className="flex flex-col gap-1">
           <label className="text-xs text-white/40">End</label>

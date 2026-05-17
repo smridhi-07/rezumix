@@ -11,7 +11,6 @@ export async function exportToPDF(elementId, filename = "resume") {
     const html2canvas = (await import("html2canvas")).default;
     const { jsPDF } = await import("jspdf");
 
-    // Clone the element and apply only inline styles
     const clone = element.cloneNode(true);
     clone.style.position = "absolute";
     clone.style.left = "-9999px";
@@ -29,11 +28,28 @@ export async function exportToPDF(elementId, filename = "resume") {
       width: 794,
       windowWidth: 794,
       onclone: (doc) => {
-        // Remove all stylesheets to avoid lab() color parsing
-        const styles = doc.querySelectorAll(
-          'link[rel="stylesheet"], style'
-        );
-        styles.forEach((s) => s.remove());
+        // Fix lab() colors by replacing with safe equivalents
+        const allElements = doc.querySelectorAll("*");
+        allElements.forEach((el) => {
+          try {
+            const computed = window.getComputedStyle(el);
+            const bg = computed.backgroundColor;
+            const color = computed.color;
+            const border = computed.borderColor;
+
+            if (bg && (bg.includes("lab") || bg.includes("oklch") || bg.includes("color("))) {
+              el.style.backgroundColor = "#ffffff";
+            }
+            if (color && (color.includes("lab") || color.includes("oklch") || color.includes("color("))) {
+              el.style.color = "#111827";
+            }
+            if (border && (border.includes("lab") || border.includes("oklch") || border.includes("color("))) {
+              el.style.borderColor = "#e5e7eb";
+            }
+          } catch (e) {
+            // ignore
+          }
+        });
       },
     });
 
@@ -46,11 +62,23 @@ export async function exportToPDF(elementId, filename = "resume") {
       format: "a4",
     });
 
-    const margin = 10;
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgHeight = (canvas.height * pageWidth) / canvas.width;
 
-    pdf.addImage(imgData, "JPEG", margin, 0, pdfWidth, pdfHeight);
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, "JPEG", 0, position, pageWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "JPEG", 0, position, pageWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+
     pdf.save(`${filename.replace(/\s+/g, "_")}.pdf`);
   } catch (err) {
     console.error("[exportPDF] Export failed:", err);

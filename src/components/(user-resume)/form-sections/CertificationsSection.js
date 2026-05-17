@@ -55,7 +55,7 @@ function CertificationsSection({ data, onChange }) {
                 u[i] = { ...entry, date: e.target.value };
                 onChange(u);
               }}
-              className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7c6dfa] transition-all"
+              className="bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7c6dfa] transition-all[color-scheme:dark]"
             />
           </div>
         </div>

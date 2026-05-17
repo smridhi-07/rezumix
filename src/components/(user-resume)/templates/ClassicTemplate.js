@@ -7,6 +7,8 @@ function fmt(dateStr) {
   });
 }
 
+const breakWord = { wordBreak: "break-word", overflowWrap: "break-word" };
+
 export default function ClassicTemplate({ data }) {
   const { personalInfo, experience, education, skills, projects, certifications } = data;
 
@@ -25,8 +27,8 @@ export default function ClassicTemplate({ data }) {
         </div>
         {(personalInfo.linkedin || personalInfo.portfolio) && (
           <div style={{ display: "flex", justifyContent: "center", gap: "16px", fontSize: "12px", color: "#6b7280", marginTop: "4px" }}>
-            {personalInfo.linkedin && <span>{personalInfo.linkedin}</span>}
-            {personalInfo.portfolio && <span>{personalInfo.portfolio}</span>}
+            {personalInfo.linkedin && <span style={breakWord}>{personalInfo.linkedin}</span>}
+            {personalInfo.portfolio && <span style={breakWord}>{personalInfo.portfolio}</span>}
           </div>
         )}
       </div>
@@ -37,7 +39,7 @@ export default function ClassicTemplate({ data }) {
           <h2 style={{ fontSize: "13px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "2px", marginBottom: "6px" }}>
             Objective
           </h2>
-          <p style={{ color: "#374151" }}>{personalInfo.summary}</p>
+          <p style={{ color: "#374151", ...breakWord }}>{personalInfo.summary}</p>
         </section>
       )}
 
@@ -59,7 +61,7 @@ export default function ClassicTemplate({ data }) {
                 {exp.role}
               </div>
               {exp.description && (
-                <p style={{ color: "#374151", fontSize: "12px", whiteSpace: "pre-line" }}>
+                <p style={{ color: "#374151", fontSize: "12px", whiteSpace: "pre-line", ...breakWord }}>
                   {exp.description}
                 </p>
               )}
@@ -83,7 +85,7 @@ export default function ClassicTemplate({ data }) {
                 </p>
                 {edu.gpa && <p style={{ color: "#6b7280", fontSize: "12px" }}>GPA: {edu.gpa}</p>}
               </div>
-              <span style={{ fontSize: "12px", color: "#6b7280" }}>
+              <span style={{ fontSize: "12px", color: "#6b7280", whiteSpace: "nowrap" }}>
                 {fmt(edu.startDate)} – {fmt(edu.endDate)}
               </span>
             </div>
@@ -98,12 +100,12 @@ export default function ClassicTemplate({ data }) {
             Skills
           </h2>
           {skills.technical.length > 0 && (
-            <p style={{ fontSize: "12px", marginBottom: "4px" }}>
+            <p style={{ fontSize: "12px", marginBottom: "4px", ...breakWord }}>
               <strong>Technical:</strong> {skills.technical.join(", ")}
             </p>
           )}
           {skills.soft.length > 0 && (
-            <p style={{ fontSize: "12px" }}>
+            <p style={{ fontSize: "12px", ...breakWord }}>
               <strong>Soft Skills:</strong> {skills.soft.join(", ")}
             </p>
           )}
@@ -118,7 +120,7 @@ export default function ClassicTemplate({ data }) {
           </h2>
           {projects.map((p, i) => (
             <div key={i} style={{ marginBottom: "10px" }}>
-              <p style={{ fontWeight: "bold" }}>
+              <p style={{ fontWeight: "bold", ...breakWord }}>
                 {p.title}{" "}
                 {p.techStack && (
                   <span style={{ fontWeight: "normal", fontStyle: "italic", color: "#6b7280", fontSize: "12px" }}>
@@ -127,7 +129,13 @@ export default function ClassicTemplate({ data }) {
                 )}
               </p>
               {p.description && (
-                <p style={{ fontSize: "12px", color: "#374151" }}>{p.description}</p>
+                <p style={{ fontSize: "12px", color: "#374151", ...breakWord }}>{p.description}</p>
+              )}
+              {p.link && (
+                <a href={p.link} target="_blank" rel="noreferrer"
+                  style={{ fontSize: "11px", color: "#4338ca", textDecoration: "underline", ...breakWord }}>
+                  {p.link}
+                </a>
               )}
             </div>
           ))}
@@ -141,14 +149,22 @@ export default function ClassicTemplate({ data }) {
             Certifications
           </h2>
           {certifications.map((c, i) => (
-            <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
-              <div>
-                <span style={{ fontWeight: "600" }}>{c.name}</span>
-                {c.issuer && (
-                  <span style={{ color: "#6b7280", fontSize: "12px", marginLeft: "8px" }}>— {c.issuer}</span>
-                )}
+            <div key={i} style={{ marginBottom: "8px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div>
+                  <span style={{ fontWeight: "600", ...breakWord }}>{c.name}</span>
+                  {c.issuer && (
+                    <span style={{ color: "#6b7280", fontSize: "12px", marginLeft: "8px" }}>— {c.issuer}</span>
+                  )}
+                </div>
+                {c.date && <span style={{ color: "#9ca3af", fontSize: "12px", whiteSpace: "nowrap" }}>{fmt(c.date)}</span>}
               </div>
-              {c.date && <span style={{ color: "#9ca3af", fontSize: "12px" }}>{fmt(c.date)}</span>}
+              {c.url && (
+                <a href={c.url} target="_blank" rel="noreferrer"
+                  style={{ fontSize: "11px", color: "#4338ca", textDecoration: "underline", ...breakWord }}>
+                  {c.url}
+                </a>
+              )}
             </div>
           ))}
         </section>
